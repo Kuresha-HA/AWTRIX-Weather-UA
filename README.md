@@ -80,9 +80,9 @@
 
 ### 🖼️ Приклади
 
-![Приклад 1 — AWTRIX Погода](https://raw.githubusercontent.com/Kuresha-HA/AwtrixBlueprints/main/images/awtrix-weather-example-1.png)
+![Приклад 1 — AWTRIX Погода](https://raw.githubusercontent.com/Kuresha-HA/AWTRIX-Weather-UA/main/images/awtrix-weather-example-1.png)
 
-![Приклад 2 — AWTRIX Погода](https://raw.githubusercontent.com/Kuresha-HA/AwtrixBlueprints/main/images/awtrix-weather-example-2.png)
+![Приклад 2 — AWTRIX Погода](https://raw.githubusercontent.com/Kuresha-HA/AWTRIX-Weather-UA/main/images/awtrix-weather-example-2.png)
 
 ### 🔌 AWTRIX 3 та AWTRIX NG
 
@@ -128,9 +128,9 @@
 
 ### 📥 Імпорт у Home Assistant
 
-[![Імпорт блюпринта](https://my.home-assistant.io/badges/blueprint_import.svg)](https://my.home-assistant.io/redirect/blueprint_import?blueprint_url=https://raw.githubusercontent.com/Kuresha-HA/AwtrixBlueprints/main/blueprints/automation/awtrix_weather.yaml)
+[![Імпорт блюпринта](https://my.home-assistant.io/badges/blueprint_import.svg)](https://my.home-assistant.io/redirect/blueprint_import?blueprint_url=https://raw.githubusercontent.com/Kuresha-HA/AWTRIX-Weather-UA/main/blueprints/automation/awtrix_weather.yaml)
 
-[Відкрити YAML-файл блюпринта](https://raw.githubusercontent.com/Kuresha-HA/AwtrixBlueprints/main/blueprints/automation/awtrix_weather.yaml)
+[Відкрити YAML-файл блюпринта](https://raw.githubusercontent.com/Kuresha-HA/AWTRIX-Weather-UA/main/blueprints/automation/awtrix_weather.yaml)
 
 ---
 
