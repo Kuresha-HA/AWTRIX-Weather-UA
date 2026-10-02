@@ -614,8 +614,6 @@ variables:
   icon_windy: !input icon_windy
   icon_windy_variant: !input icon_windy_variant
 
-  clear_night_dict: "{{ dict({'full_moon':'2314','waning_gibbous':'2315','last_quarter':'2316','waning_crescent':'2317','new_moon':'2318','waxing_crescent':'2319','first_quarter':'2320','waxing_gibbous':'2321'}) }}"
-
   color_matrix_json: !input color_matrix_json
   color_dict: >-
     {% set b = color_matrix_json | from_json %}
@@ -645,14 +643,10 @@ variables:
       'windy-variant': icon_windy_variant
     }) }}
 
+  # Іконка погоди для поточного стану. Заміна на місяць робиться не тут, а у payload
+  # (shown_icon): коли місяць малюється замість іконки, іконка стає порожньою.
   icon: >-
-    {%- if (current_condition == 'clear_night') and use_moon_clear_night -%}
-      {{ clear_night_dict.get(moon_phase, icon_clear_night) }}
-    {%- elif (sun_next_event == 'sunrise') and use_moon_sunny_night and (current_condition == 'sunny') -%}
-      {{ clear_night_dict.get(moon_phase, icon_clear_night) }}
-    {%- else -%}
-      {{ icon_dict.get(current_condition, icon_exceptional) }}
-    {%- endif -%}
+    {{ icon_dict.get(current_condition, icon_exceptional) }}
 
   # True коли місяць малюється над слотом іконки (x=0) замість місця праворуч (x=23)
   moon_replaces_icon: >-
@@ -677,7 +671,7 @@ variables:
 
 trigger:
   - platform: time_pattern
-    seconds: "/5"
+    minutes: "/1"
   - platform: state
     entity_id: !input forecast_var
     id: Changes
@@ -750,24 +744,25 @@ action:
 
               {%- if show_moon -%}
                 {%- if ng -%}
-                  {%- set ns.items = ns.items + ['["bitmap",' ~ moon_x ~ ',0,8,8,' ~ (moon_pixels | tojson) ~ ']'] -%}
+                  {%- set ns.items = ns.items + ['["bitmap",' ~ moon_x ~ ',0,8,8,' ~ moon_pixels ~ ']'] -%}
                 {%- else -%}
-                  {%- set ns.items = ns.items + ['{"db":[' ~ moon_x ~ ',0,8,8,' ~ (moon_pixels | tojson) ~ ']}'] -%}
+                  {%- set ns.items = ns.items + ['{"db":[' ~ moon_x ~ ',0,8,8,' ~ moon_pixels ~ ']}'] -%}
                 {%- endif -%}
               {%- endif -%}
 
+              {#- Коли місяць замінює іконку, слот іконки порожній (NG малює іконку поверх draw). -#}
+              {%- set shown_icon = '' if (show_moon and moon_replaces_icon) else icon -%}
               {%- if ng -%}
-              {%- set ng_icon = '' if (show_moon and moon_replaces_icon) else icon -%}
               {
                 "draw":[{{ ns.items | join(',') }}],
-                "icon":"{{ ng_icon }}",
+                "icon":"{{ shown_icon }}",
                 "durationMs": {{ (message_duration | int) * 1000 }},
                 "lifetimeMs": 120000
               }
               {%- else -%}
               {
                 "draw":[{{ ns.items | join(',') }}],
-                "icon":"{{ icon }}",
+                "icon":"{{ shown_icon }}",
                 "duration": {{ message_duration }},
                 "pushIcon": 2,
                 "lifetime": 120,
